@@ -7,7 +7,7 @@ namespace BattleShip
 {
     public class Grid
     {
-        string[,] arr = new string[21, 21];
+        public string[,] arr = new string[21, 21];
 
         public void MakeNewGrid()
         {
@@ -56,7 +56,8 @@ namespace BattleShip
                 }
                 Console.Write(Environment.NewLine);
             }
-            Console.ReadLine();
         }
+
+
     }
 }
