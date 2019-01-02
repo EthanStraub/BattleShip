@@ -7,11 +7,35 @@ namespace BattleShip
 {
     public class GameManager
     {
-        Game NewGame = new Game();
-
         public void StartGame()
         {
+            Game NewGame = new Game();
             NewGame.GameLoop();
+            RestartGame();
+        }
+
+        public void RestartGame()
+        {
+            Console.WriteLine("Game over! Type 'restart' to restart, or 'quit' to quit!");
+            bool isInputValid = false;
+            while (!isInputValid)
+            {
+                string winOption = Console.ReadLine();
+                switch (winOption)
+                {
+                    case "restart":
+                        isInputValid = true;
+                        StartGame();
+                        break;
+                    case "quit":
+                        isInputValid = true;
+                        System.Environment.Exit(1);
+                        break;
+                    default:
+                        Console.WriteLine("Please try again.");
+                        break;
+                }
+            }
         }
     }
 }
