@@ -7,8 +7,8 @@ namespace BattleShip
 {
     public class Game
     {
-        Player Player1 = new Player("");
-        Player Player2 = new Player("");
+        Player Player1 = new Player();
+        Player Player2 = new Player();
 
         Grid P1Grid = new Grid();
         Grid P2Grid = new Grid();
@@ -21,10 +21,10 @@ namespace BattleShip
         public void Setup()
         {
             Console.WriteLine("What will player 1's name be? Type below a name under 10 characters.");
-            Player1.playerName = Player1.NamePlayer();
+            Player1.PlayerName = Player1.NamePlayer();
 
             Console.WriteLine("What will player 2's name be? Type below a name under 10 characters.");
-            Player2.playerName = Player2.NamePlayer();
+            Player2.PlayerName = Player2.NamePlayer();
 
             P1Grid.MakeNewGrid();
             P2Grid.MakeNewGrid();
@@ -45,71 +45,57 @@ namespace BattleShip
 
         public void TurnLoop()
         {
-            Console.WriteLine(Player1.playerName + "'s turn.");
+            Console.WriteLine(Player1.PlayerName + "'s turn.");
+            Console.WriteLine("Your Grid: ");
+            P1Grid.DisplayGrid();
+            Console.WriteLine("Enemy Grid: ");
             P1PreviewGrid.DisplayGrid();
+            PrintScore(Player1);
+
             PlayerShoot(Player1, P2Grid, P1PreviewGrid);
+            if (Player1.DownedShips.Count == 4)
+            {
+                return;
+            }
             P1PreviewGrid.DisplayGrid();
 
             Console.WriteLine("Press ENTER for the next player's turn");
             Console.ReadLine();
-            for (int i = 0; i < 6; i++)
-            {
-                Console.WriteLine("");
-            }
+            Console.Clear();
 
-            Console.WriteLine(Player2.playerName + "'s turn.");
+            Console.WriteLine(Player2.PlayerName + "'s turn.");
+            Console.WriteLine("Your Grid: ");
+            P2Grid.DisplayGrid();
+            Console.WriteLine("Enemy Grid: ");
             P2PreviewGrid.DisplayGrid();
+            PrintScore(Player2);
+
             PlayerShoot(Player2, P1Grid, P2PreviewGrid);
+            if (Player2.DownedShips.Count == 4)
+            {
+                return;
+            }
             P2PreviewGrid.DisplayGrid();
 
             Console.WriteLine("Press ENTER for the next player's turn");
             Console.ReadLine();
-            for (int i = 0; i < 6; i++)
-            {
-                Console.WriteLine("");
-            }
+            Console.Clear();
         }
 
         public void GameLoop()
         {
             Setup();
-            while( ( Player1.SubCount < 10 ||
-                     Player1.DesCount < 10 ||
-                     Player1.BatCount < 10 ||
-                     Player1.AirCount < 10 ) &&
-
-                   ( Player2.SubCount < 10 ||
-                     Player2.DesCount < 10 ||
-                     Player2.BatCount < 10 ||
-                     Player2.AirCount < 10 ) )
+            while( Player1.DownedShips.Count < 4 && Player2.DownedShips.Count < 4 )
             {
                 TurnLoop();
             }
-            if (Player1.SubCount == 10 &&
-                     Player1.DesCount == 10 &&
-                     Player1.BatCount == 10 &&
-                     Player1.AirCount == 10 && 
-                     
-                     Player2.SubCount == 10 &&
-                     Player2.DesCount == 10 &&
-                     Player2.BatCount == 10 &&
-                     Player2.AirCount == 10)
+            if (Player1.DownedShips.Count == 4)
             {
-                Console.WriteLine("DRAW!!");
+                Console.WriteLine(Player1.PlayerName + " wins!!");
             }
-            else if (Player1.SubCount == 10 &&
-                Player1.DesCount == 10 &&
-                Player1.BatCount == 10 &&
-                Player1.AirCount == 10)
+            else if (Player2.DownedShips.Count == 4)
             {
-                Console.WriteLine(Player1.playerName + " wins!!");
-            }
-            else if (Player2.SubCount == 10 &&
-                     Player2.DesCount == 10 &&
-                     Player2.BatCount == 10 &&
-                     Player2.AirCount == 10)
-            {
-                Console.WriteLine(Player2.playerName + " wins!!");
+                Console.WriteLine(Player2.PlayerName + " wins!!");
             }
         }
 
@@ -121,64 +107,82 @@ namespace BattleShip
                 Console.WriteLine("Hit!!");
                 Player.SubCount += 1;
 
-                Grid1.arr[cords[0], cords[1]] = "X ";
-                Grid2.arr[cords[0], cords[1]] = "X ";
+                Grid1.arr[cords[0], cords[1]] = "! ";
+                Grid2.arr[cords[0], cords[1]] = "! ";
             }
             else if (Grid1.arr[cords[0], cords[1]] == "D ")
             {
                 Console.WriteLine("Hit!!");
                 Player.DesCount += 1;
 
-                Grid1.arr[cords[0], cords[1]] = "X ";
-                Grid2.arr[cords[0], cords[1]] = "X ";
+                Grid1.arr[cords[0], cords[1]] = "! ";
+                Grid2.arr[cords[0], cords[1]] = "! ";
             }
             else if (Grid1.arr[cords[0], cords[1]] == "B ")
             {
                 Console.WriteLine("Hit!!");
                 Player.BatCount += 1;
 
-                Grid1.arr[cords[0], cords[1]] = "X ";
-                Grid2.arr[cords[0], cords[1]] = "X ";
+                Grid1.arr[cords[0], cords[1]] = "! ";
+                Grid2.arr[cords[0], cords[1]] = "! ";
             }
             else if (Grid1.arr[cords[0], cords[1]] == "A ")
             {
                 Console.WriteLine("Hit!!");
                 Player.AirCount += 1;
 
-                Grid1.arr[cords[0], cords[1]] = "X ";
-                Grid2.arr[cords[0], cords[1]] = "X ";
+                Grid1.arr[cords[0], cords[1]] = "! ";
+                Grid2.arr[cords[0], cords[1]] = "! ";
             }
             else
             {
                 Console.WriteLine("Miss!!");
+                Grid1.arr[cords[0], cords[1]] = "? ";
+                Grid2.arr[cords[0], cords[1]] = "? ";
             }
 
             if (Player.SubCount == 2)
             {
                 Console.WriteLine("Enemy submarine sunk!!");
+                Player.DownedShips.Add("Submarine");
                 Player.SubCount = 10;
             }
-            else if (Player.DesCount == 2)
+            else if (Player.DesCount == 3)
             {
                 Console.WriteLine("Enemy destroyer sunk!!");
+                Player.DownedShips.Add("Destroyer");
                 Player.DesCount = 10;
             }
-            else if (Player.BatCount == 2)
+            else if (Player.BatCount == 4)
             {
                 Console.WriteLine("Enemy batleship sunk!!");
+                Player.DownedShips.Add("Batleship");
                 Player.BatCount = 10;
             }
-            else if (Player.AirCount == 2)
+            else if (Player.AirCount == 5)
             {
                 Console.WriteLine("Enemy aircraft carrier sunk!!");
+                Player.DownedShips.Add("Aircraft carrier");
                 Player.AirCount = 10;
+            }
+        }
+
+        public void PrintScore(Player Player)
+        {
+            if (Player.DownedShips.Count > 0)
+            {
+                Console.WriteLine("Enemy ships sunk: ");
+                for (int i = 0; i < Player.DownedShips.Count; i ++)
+                {
+                    Console.WriteLine(Player.DownedShips[i]);
+                }
             }
         }
 
         public void ShipSetup(Player Player, Grid Grid)
         {
             int gridIncriment = 0;
-            for (int i = 0; i < Player.shipSetLength; i++)
+            for (int i = 0; i < 4; i++)
             {
                 if (i == 0)
                 {
@@ -186,12 +190,9 @@ namespace BattleShip
                     while (gridIncriment < 2)
                     {
                         int[] cords = Player.AskShips(i);
-                        if (Grid.arr[cords[0], cords[1]] == "S " ||
-                            Grid.arr[cords[0], cords[1]] == "D " ||
-                            Grid.arr[cords[0], cords[1]] == "B " ||
-                            Grid.arr[cords[0], cords[1]] == "A ")
+                        if (GridCheck(cords, Grid, 1, gridIncriment))
                         {
-                            Console.WriteLine("You can't place a submarine there!");
+                            Console.WriteLine("You can't place a submarine part there!");
                         }
                         else
                         {
@@ -204,15 +205,12 @@ namespace BattleShip
                 else if (i == 1)
                 {
                     gridIncriment = 0;
-                    while (gridIncriment < 2)
+                    while (gridIncriment < 3)
                     {
                         int[] cords = Player.AskShips(i);
-                        if (Grid.arr[cords[0], cords[1]] == "S " ||
-                            Grid.arr[cords[0], cords[1]] == "D " ||
-                            Grid.arr[cords[0], cords[1]] == "B " ||
-                            Grid.arr[cords[0], cords[1]] == "A ")
+                        if (GridCheck(cords, Grid, 2, gridIncriment))
                         {
-                            Console.WriteLine("You can't place a destroyer there!");
+                            Console.WriteLine("You can't place a destroyer part there!");
                         }
                         else
                         {
@@ -225,15 +223,12 @@ namespace BattleShip
                 else if (i == 2)
                 {
                     gridIncriment = 0;
-                    while (gridIncriment < 2)
+                    while (gridIncriment < 4)
                     {
                         int[] cords = Player.AskShips(i);
-                        if (Grid.arr[cords[0], cords[1]] == "S " ||
-                            Grid.arr[cords[0], cords[1]] == "D " ||
-                            Grid.arr[cords[0], cords[1]] == "B " ||
-                            Grid.arr[cords[0], cords[1]] == "A ")
+                        if (GridCheck(cords, Grid, 3, gridIncriment))
                         {
-                            Console.WriteLine("You can't place a battleship there!");
+                            Console.WriteLine("You can't place a battleship part there!");
                         }
                         else
                         {
@@ -246,15 +241,12 @@ namespace BattleShip
                 else if (i == 3)
                 {
                     gridIncriment = 0;
-                    while (gridIncriment < 2)
+                    while (gridIncriment < 5)
                     {
                         int[] cords = Player.AskShips(i);
-                        if (Grid.arr[cords[0], cords[1]] == "S " ||
-                            Grid.arr[cords[0], cords[1]] == "D " ||
-                            Grid.arr[cords[0], cords[1]] == "B " ||
-                            Grid.arr[cords[0], cords[1]] == "A ")
+                        if (GridCheck(cords, Grid, 4, gridIncriment))
                         {
-                            Console.WriteLine("You can't place an aircraft carrier there!");
+                            Console.WriteLine("You can't place an aircraft carrier part there!");
                         }
                         else
                         {
@@ -265,13 +257,104 @@ namespace BattleShip
                     }
                 }
             }
+            Console.Clear();
+            Console.WriteLine("All ships set up by "+ Player.PlayerName);
+        }
 
-            for (int i = 0; i < 6; i++)
+        public bool GridCheck(int[] checkedCords, Grid checkedGrid, int shipType, int gridInc)
+        {
+            if (shipType == 1)
             {
-                Console.WriteLine("");
+                if (checkedGrid.arr[checkedCords[0], checkedCords[1]] == "S " ||
+                      checkedGrid.arr[checkedCords[0], checkedCords[1]] == "D " ||
+                      checkedGrid.arr[checkedCords[0], checkedCords[1]] == "B " ||
+                      checkedGrid.arr[checkedCords[0], checkedCords[1]] == "A ")
+                {
+                    return true;
+                }
+                else if (gridInc >= 1
+                        && checkedGrid.arr[checkedCords[0] - 1, checkedCords[1]] != "S "
+                        && checkedGrid.arr[checkedCords[0], checkedCords[1] - 1] != "S "
+                        && checkedGrid.arr[checkedCords[0] + 1, checkedCords[1]] != "S "
+                        && checkedGrid.arr[checkedCords[0], checkedCords[1] + 1] != "S ")
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
-
-            Console.WriteLine("All ships set up by "+ Player.playerName);
+            else if (shipType == 2)
+            {
+                if (checkedGrid.arr[checkedCords[0], checkedCords[1]] == "S " ||
+                      checkedGrid.arr[checkedCords[0], checkedCords[1]] == "D " ||
+                      checkedGrid.arr[checkedCords[0], checkedCords[1]] == "B " ||
+                      checkedGrid.arr[checkedCords[0], checkedCords[1]] == "A ")
+                {
+                    return true;
+                }
+                else if (gridInc >= 1
+                        && checkedGrid.arr[checkedCords[0] - 1, checkedCords[1]] != "D "
+                        && checkedGrid.arr[checkedCords[0], checkedCords[1] - 1] != "D "
+                        && checkedGrid.arr[checkedCords[0] + 1, checkedCords[1]] != "D "
+                        && checkedGrid.arr[checkedCords[0], checkedCords[1] + 1] != "D ")
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else if (shipType == 3)
+            {
+                if (checkedGrid.arr[checkedCords[0], checkedCords[1]] == "S " ||
+                      checkedGrid.arr[checkedCords[0], checkedCords[1]] == "D " ||
+                      checkedGrid.arr[checkedCords[0], checkedCords[1]] == "B " ||
+                      checkedGrid.arr[checkedCords[0], checkedCords[1]] == "A ")
+                {
+                    return true;
+                }
+                else if (gridInc >= 1
+                        && checkedGrid.arr[checkedCords[0] - 1, checkedCords[1]] != "B "
+                        && checkedGrid.arr[checkedCords[0], checkedCords[1] - 1] != "B "
+                        && checkedGrid.arr[checkedCords[0] + 1, checkedCords[1]] != "B "
+                        && checkedGrid.arr[checkedCords[0], checkedCords[1] + 1] != "B ")
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else if (shipType == 4)
+            {
+                if (checkedGrid.arr[checkedCords[0], checkedCords[1]] == "S " ||
+                      checkedGrid.arr[checkedCords[0], checkedCords[1]] == "D " ||
+                      checkedGrid.arr[checkedCords[0], checkedCords[1]] == "B " ||
+                      checkedGrid.arr[checkedCords[0], checkedCords[1]] == "A ")
+                {
+                    return true;
+                }
+                else if (gridInc >= 1
+                        && checkedGrid.arr[checkedCords[0] - 1, checkedCords[1]] != "A "
+                        && checkedGrid.arr[checkedCords[0], checkedCords[1] - 1] != "A "
+                        && checkedGrid.arr[checkedCords[0] + 1, checkedCords[1]] != "A "
+                        && checkedGrid.arr[checkedCords[0], checkedCords[1] + 1] != "A ")
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

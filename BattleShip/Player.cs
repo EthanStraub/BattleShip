@@ -14,21 +14,18 @@ namespace BattleShip
         private int batCount = 0;
         private int airCount = 0;
 
+        private string playerName;
+
+        private List<string> downedShips = new List<string>();
+
         public int SubCount {  get { return subCount; } set { subCount = value; } }
         public int DesCount {  get { return desCount; } set { desCount = value; } }
         public int BatCount {  get { return batCount; } set { batCount = value; } }
         public int AirCount {  get { return airCount; } set { airCount = value; } }
 
-        public string playerName;
-        public int shipSetLength = 4;
+        public string PlayerName { get { return playerName; } set { playerName = value; } }
 
-        ShipSet NewShipSet = new ShipSet();
-        
-
-        public Player(string playerName)
-        {
-            this.playerName = playerName;
-        }
+        public List<string> DownedShips { get { return downedShips; } set { downedShips = value; } }
 
         public string NamePlayer()
         {

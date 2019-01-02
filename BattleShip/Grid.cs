@@ -15,19 +15,16 @@ namespace BattleShip
             {
                 string[] letArr = new string[21] { "//","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T" };
                 
-
                 for (int j = 0; j < 21; j++)
                 {
                     arr[i, j] = letArr[j];
                     arr[i, j] += " ";
                 }
-                
             }
 
             for (int i = 1; i < 21; i++)
             {
                 string[] numArr = new string[21] { "//", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20" };
-
 
                 for (int j = 0; j < 1; j++)
                 {

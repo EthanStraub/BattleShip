@@ -25,6 +25,7 @@ namespace BattleShip
                 {
                     case "restart":
                         isInputValid = true;
+                        Console.Clear();
                         StartGame();
                         break;
                     case "quit":
