@@ -6,15 +6,18 @@ using System.Threading.Tasks;
 
 namespace BattleShip
 {
-    class Destroyer
+    public class Destroyer
     {
         bool shipPlaced = false;
+        public bool shipError = false;
         public int[] ShipMove(int[] movedCords, Grid Grid, ConsoleKey KeyPress)
         {
             if (KeyPress == ConsoleKey.RightArrow)
             {
                 shipPlaced = false;
-                if (Grid.arr[movedCords[0], movedCords[1] + 1] == ". " && Grid.arr[movedCords[0] + 1, movedCords[1] + 1] == ". " && Grid.arr[movedCords[0] + 2, movedCords[1] + 1] == ". ")
+                shipError = false;
+                if ((Grid.arr[movedCords[0], movedCords[1] + 1] == ". " && Grid.arr[movedCords[0] + 1, movedCords[1] + 1] == ". " && Grid.arr[movedCords[0] + 2, movedCords[1] + 1] == ". ") ||
+                    (Grid.arr[movedCords[0], movedCords[1] + 1] == "Y " && Grid.arr[movedCords[0] + 1, movedCords[1] + 1] == "Y " && Grid.arr[movedCords[0] + 2, movedCords[1] + 1] == "Y "))
                 {
                     Grid.arr[movedCords[0], movedCords[1]] = ". ";
                     Grid.arr[movedCords[0] + 1, movedCords[1]] = ". ";
@@ -26,6 +29,7 @@ namespace BattleShip
             else if (KeyPress == ConsoleKey.LeftArrow)
             {
                 shipPlaced = false;
+                shipError = false;
                 if (Grid.arr[movedCords[0], movedCords[1] - 1] == ". " && Grid.arr[movedCords[0] + 1, movedCords[1] - 1] == ". " && Grid.arr[movedCords[0] + 2, movedCords[1] - 1] == ". ")
                 {
                     Grid.arr[movedCords[0], movedCords[1]] = ". ";
@@ -38,7 +42,8 @@ namespace BattleShip
             else if (KeyPress == ConsoleKey.DownArrow)
             {
                 shipPlaced = false;
-                if (Grid.arr[movedCords[0] + 3, movedCords[1]] == ". ")
+                shipError = false;
+                if ((Grid.arr[movedCords[0] + 3, movedCords[1]] == ". ") || (Grid.arr[movedCords[0] + 3, movedCords[1]] == "Y "))
                 {
                     Grid.arr[movedCords[0], movedCords[1]] = ". ";
                     movedCords[0] += 1;
@@ -48,6 +53,7 @@ namespace BattleShip
             else if (KeyPress == ConsoleKey.UpArrow)
             {
                 shipPlaced = false;
+                shipError = false;
                 if (Grid.arr[movedCords[0] - 1, movedCords[1]] == ". ")
                 {
                     Grid.arr[movedCords[0] + 2, movedCords[1]] = ". ";
@@ -57,7 +63,14 @@ namespace BattleShip
             }
             else if (KeyPress == ConsoleKey.Enter)
             {
-                shipPlaced = true;
+                if (movedCords[0] > 6 || movedCords[1] > 5)
+                {
+                    shipPlaced = true;
+                }
+                else
+                {
+                    shipError = true;
+                }
                 return movedCords;
             }
             else
@@ -76,6 +89,14 @@ namespace BattleShip
             {
                 return false;
             }
+        }
+
+        public Grid ShipPlace(int[] movedCords, Grid Grid)
+        {     
+            Grid.arr[movedCords[0], movedCords[1]] = "D ";
+            Grid.arr[movedCords[0] + 1, movedCords[1]] = "D ";
+            Grid.arr[movedCords[0] + 2, movedCords[1]] = "D ";
+            return Grid;
         }
     }
 }

@@ -57,6 +57,24 @@ namespace BattleShip
                 }
             }
 
+            for (int i = 1; i < 6; i++)
+            {
+                for (int j = 5; j < 6; j++)
+                {
+                    arr[i, j] = "Y ";
+                }
+            }
+
+            for (int i = 6; i < 7; i++)
+            {
+                for (int j = 1; j < 6; j++)
+                {
+                    arr[i, j] = "Y ";
+                }
+            }
+
+            arr[6, 5] = "Y ";
+
             arr[21, 21] = " #";
         }
 
@@ -71,6 +89,25 @@ namespace BattleShip
                 Console.Write(Environment.NewLine);
             }
         }
+        public void AssembleYard()
+        {
+            for (int i = 1; i < 6; i++)
+            {
+                for (int j = 5; j < 6; j++)
+                {
+                    arr[i, j] = "Y ";
+                }
+            }
 
+            for (int i = 6; i < 7; i++)
+            {
+                for (int j = 1; j < 6; j++)
+                {
+                    arr[i, j] = "Y ";
+                }
+            }
+
+            arr[6, 5] = "Y ";
+        }
     }
 }

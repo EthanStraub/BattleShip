@@ -179,7 +179,13 @@ namespace BattleShip
             }
         }
 
-        
+        public void ErrorCheck(Submarine Sub, Destroyer Des, Battleship Bat, AircraftCarrier Air)
+        {
+            if (Sub.shipError || Des.shipError || Bat.shipError || Air.shipError)
+            {
+                Console.WriteLine("Ships can't be deployed in the shipyard!");
+            }
+        }
 
         public void ShipSetup(Player Player, Grid Grid)
         {
@@ -193,137 +199,89 @@ namespace BattleShip
                 if (i == 0)
                 {
                     int[] originCords = new int[2] { 1, 1 };
-                    
+
                     while (Sub.Authorize() == false)
                     {
                         Console.Clear();
-                        Sub.ShipOrientate(originCords, Grid);
+                        Sub.ShipPlace(originCords, Grid);
                         Grid.DisplayGrid();
-                        Console.WriteLine("-- " +Player.PlayerName + "'s setup phase --");
+                        Grid.AssembleYard();
+                        Console.WriteLine("-- " + Player.PlayerName + "'s setup phase --");
                         Console.WriteLine("Press Enter to place your ship.");
                         Console.WriteLine("Press the arrow keys to move your ship.");
+                        ErrorCheck(Sub, Des, Bat, Air);
                         Sub.ShipMove(originCords, Grid, Console.ReadKey().Key);
                         Sub.Authorize();
                     }
                     Console.Clear();
-                    Sub.ShipOrientate(originCords, Grid);
+                    Sub.ShipPlace(originCords, Grid);
                     Grid.DisplayGrid();
                 }
                 else if (i == 1)
                 {
-                    int[] originCords = new int[2] { 1, 2 };
+                    int[] originCords = new int[2] { 1, 1 };
 
                     while (Des.Authorize() == false)
                     {
                         Console.Clear();
-                        Grid.arr[originCords[0], originCords[1]] = "D ";
-                        Grid.arr[originCords[0] + 1, originCords[1]] = "D ";
-                        Grid.arr[originCords[0] + 2, originCords[1]] = "D ";
+                        Des.ShipPlace(originCords, Grid);
                         Grid.DisplayGrid();
+                        Grid.AssembleYard();
                         Console.WriteLine("-- " + Player.PlayerName + "'s setup phase --");
                         Console.WriteLine("Press Enter to place your ship.");
                         Console.WriteLine("Press the arrow keys to move your ship.");
+                        ErrorCheck(Sub, Des, Bat, Air);
                         Des.ShipMove(originCords, Grid, Console.ReadKey().Key);
                         Des.Authorize();
                     }
                     Console.Clear();
-                    Grid.arr[originCords[0], originCords[1]] = "D ";
-                    Grid.arr[originCords[0] + 1, originCords[1]] = "D ";
-                    Grid.arr[originCords[0] + 2, originCords[1]] = "D ";
+                    Des.ShipPlace(originCords, Grid);
                     Grid.DisplayGrid();
                 }
                 else if (i == 2)
                 {
-                    int[] originCords = new int[2] { 1, 3 };
+                    int[] originCords = new int[2] { 1, 1 };
 
                     while (Bat.Authorize() == false)
                     {
                         Console.Clear();
-                        Grid.arr[originCords[0], originCords[1]] = "B ";
-                        Grid.arr[originCords[0] + 1, originCords[1]] = "B ";
-                        Grid.arr[originCords[0] + 2, originCords[1]] = "B ";
-                        Grid.arr[originCords[0] + 3, originCords[1]] = "B ";
+                        Bat.ShipPlace(originCords, Grid);
                         Grid.DisplayGrid();
+                        Grid.AssembleYard();
                         Console.WriteLine("-- " + Player.PlayerName + "'s setup phase --");
                         Console.WriteLine("Press Enter to place your ship.");
                         Console.WriteLine("Press the arrow keys to move your ship.");
+                        ErrorCheck(Sub, Des, Bat, Air);
                         Bat.ShipMove(originCords, Grid, Console.ReadKey().Key);
                         Bat.Authorize();
                     }
                     Console.Clear();
-                    Grid.arr[originCords[0], originCords[1]] = "B ";
-                    Grid.arr[originCords[0] + 1, originCords[1]] = "B ";
-                    Grid.arr[originCords[0] + 2, originCords[1]] = "B ";
-                    Grid.arr[originCords[0] + 3, originCords[1]] = "B ";
+                    Bat.ShipPlace(originCords, Grid);
                     Grid.DisplayGrid();
                 }
                 else if (i == 3)
                 {
-                    int[] originCords = new int[2] { 1, 4 };
+                    int[] originCords = new int[2] { 1, 1 };
 
                     while (Air.Authorize() == false)
                     {
                         Console.Clear();
-                        Grid.arr[originCords[0], originCords[1]] = "A ";
-                        Grid.arr[originCords[0] + 1, originCords[1]] = "A ";
-                        Grid.arr[originCords[0] + 2, originCords[1]] = "A ";
-                        Grid.arr[originCords[0] + 3, originCords[1]] = "A ";
-                        Grid.arr[originCords[0] + 4, originCords[1]] = "A ";
+                        Air.ShipPlace(originCords, Grid);
                         Grid.DisplayGrid();
+                        Grid.AssembleYard();
                         Console.WriteLine("-- " + Player.PlayerName + "'s setup phase --");
                         Console.WriteLine("Press Enter to place your ship.");
                         Console.WriteLine("Press the arrow keys to move your ship.");
+                        ErrorCheck(Sub, Des, Bat, Air);
                         Air.ShipMove(originCords, Grid, Console.ReadKey().Key);
                         Air.Authorize();
                     }
                     Console.Clear();
-                    Grid.arr[originCords[0], originCords[1]] = "A ";
-                    Grid.arr[originCords[0] + 1, originCords[1]] = "A ";
-                    Grid.arr[originCords[0] + 2, originCords[1]] = "A ";
-                    Grid.arr[originCords[0] + 3, originCords[1]] = "A ";
-                    Grid.arr[originCords[0] + 4, originCords[1]] = "A ";
+                    Air.ShipPlace(originCords, Grid);
                     Grid.DisplayGrid();
                 }
             }
             Console.Clear();
-        }
-
-        public bool GridCheck(int[] checkedCords, Grid checkedGrid, int shipType, bool shipPlaced)
-        {
-            if (shipType == 1)
-            {
-                if (checkedGrid.arr[checkedCords[0], checkedCords[1]] == "S " ||
-                      checkedGrid.arr[checkedCords[0], checkedCords[1]] == "D " ||
-                      checkedGrid.arr[checkedCords[0], checkedCords[1]] == "B " ||
-                      checkedGrid.arr[checkedCords[0], checkedCords[1]] == "A ")
-                {
-                    return true;
-                }
-                else if (checkedGrid.arr[checkedCords[0] + 1, checkedCords[1]] != ". ")
-                {
-                    return true;
-                }
-                else if (checkedGrid.arr[checkedCords[0], checkedCords[1] + 1] != ". ")
-                {
-                    return true;
-                }
-                else if (checkedGrid.arr[checkedCords[0] - 1, checkedCords[1]] != ". ")
-                {
-                    return true;
-                }
-                else if (checkedGrid.arr[checkedCords[0], checkedCords[1] - 1] != ". ")
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                return false;
-            }
         }
     }
 }

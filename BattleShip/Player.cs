@@ -51,7 +51,7 @@ namespace BattleShip
 
         public int[] AskShips(int shipNum)
         {
-            string shipName = "TEST";
+            string shipName = " ";
             if (shipNum == 0)
             {
                 shipName = "submarine";
@@ -71,11 +71,6 @@ namespace BattleShip
             Console.WriteLine("Where would you like to place your " + shipName + ", " + playerName + "?");
             Console.WriteLine("Enter a grid entry i.e. 'A1' ");
             return Convert(Console.ReadLine(), 2, shipNum);
-        }
-
-        public void AssignShip(int shipNum)
-        {
-            
         }
 
         public int[] Convert(string coordsString, int mode, int currentShipNum)
