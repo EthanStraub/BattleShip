@@ -7,7 +7,7 @@ namespace BattleShip
 {
     public class Grid
     {
-        public string[,] arr = new string[21, 21];
+        public string[,] arr = new string[22, 22];
 
         public void MakeNewGrid()
         {
@@ -33,7 +33,6 @@ namespace BattleShip
                 }
             }
             
-
             for (int i = 1; i < 21; i++)
             {
                 for (int j = 1; j < 21; j++)
@@ -41,13 +40,31 @@ namespace BattleShip
                     arr[i, j] = ". ";
                 }
             }
+
+            for (int i = 21; i < 22; i++)
+            {
+                for (int j = 0; j < 22; j++)
+                {
+                    arr[i, j] = " #";
+                }
+            }
+
+            for (int i = 0; i < 22; i++)
+            {
+                for (int j = 21; j < 22; j++)
+                {
+                    arr[i, j] = "#";
+                }
+            }
+
+            arr[21, 21] = " #";
         }
 
         public void DisplayGrid()
         {
-            for (int i = 0; i < 21; i++)
+            for (int i = 0; i < 22; i++)
             {
-                for (int j = 0; j < 21; j++)
+                for (int j = 0; j < 22; j++)
                 {
                     Console.Write(arr[i, j]);
                 }

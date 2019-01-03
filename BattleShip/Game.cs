@@ -179,89 +179,116 @@ namespace BattleShip
             }
         }
 
+        
+
         public void ShipSetup(Player Player, Grid Grid)
         {
-            int gridIncriment = 0;
+            Submarine Sub = new Submarine();
+            Destroyer Des = new Destroyer();
+            Battleship Bat = new Battleship();
+            AircraftCarrier Air = new AircraftCarrier();
+
             for (int i = 0; i < 4; i++)
             {
                 if (i == 0)
                 {
-                    gridIncriment = 0;
-                    while (gridIncriment < 2)
+                    int[] originCords = new int[2] { 1, 1 };
+                    
+                    while (Sub.Authorize() == false)
                     {
-                        int[] cords = Player.AskShips(i);
-                        if (GridCheck(cords, Grid, 1, gridIncriment))
-                        {
-                            Console.WriteLine("You can't place a submarine part there!");
-                        }
-                        else
-                        {
-                            Grid.arr[cords[0], cords[1]] = "S ";
-                            Grid.DisplayGrid();
-                            gridIncriment += 1;
-                        }
+                        Console.Clear();
+                        Sub.ShipOrientate(originCords, Grid);
+                        Grid.DisplayGrid();
+                        Console.WriteLine("-- " +Player.PlayerName + "'s setup phase --");
+                        Console.WriteLine("Press Enter to place your ship.");
+                        Console.WriteLine("Press the arrow keys to move your ship.");
+                        Sub.ShipMove(originCords, Grid, Console.ReadKey().Key);
+                        Sub.Authorize();
                     }
+                    Console.Clear();
+                    Sub.ShipOrientate(originCords, Grid);
+                    Grid.DisplayGrid();
                 }
                 else if (i == 1)
                 {
-                    gridIncriment = 0;
-                    while (gridIncriment < 3)
+                    int[] originCords = new int[2] { 1, 2 };
+
+                    while (Des.Authorize() == false)
                     {
-                        int[] cords = Player.AskShips(i);
-                        if (GridCheck(cords, Grid, 2, gridIncriment))
-                        {
-                            Console.WriteLine("You can't place a destroyer part there!");
-                        }
-                        else
-                        {
-                            Grid.arr[cords[0], cords[1]] = "D ";
-                            Grid.DisplayGrid();
-                            gridIncriment += 1;
-                        }
+                        Console.Clear();
+                        Grid.arr[originCords[0], originCords[1]] = "D ";
+                        Grid.arr[originCords[0] + 1, originCords[1]] = "D ";
+                        Grid.arr[originCords[0] + 2, originCords[1]] = "D ";
+                        Grid.DisplayGrid();
+                        Console.WriteLine("-- " + Player.PlayerName + "'s setup phase --");
+                        Console.WriteLine("Press Enter to place your ship.");
+                        Console.WriteLine("Press the arrow keys to move your ship.");
+                        Des.ShipMove(originCords, Grid, Console.ReadKey().Key);
+                        Des.Authorize();
                     }
+                    Console.Clear();
+                    Grid.arr[originCords[0], originCords[1]] = "D ";
+                    Grid.arr[originCords[0] + 1, originCords[1]] = "D ";
+                    Grid.arr[originCords[0] + 2, originCords[1]] = "D ";
+                    Grid.DisplayGrid();
                 }
                 else if (i == 2)
                 {
-                    gridIncriment = 0;
-                    while (gridIncriment < 4)
+                    int[] originCords = new int[2] { 1, 3 };
+
+                    while (Bat.Authorize() == false)
                     {
-                        int[] cords = Player.AskShips(i);
-                        if (GridCheck(cords, Grid, 3, gridIncriment))
-                        {
-                            Console.WriteLine("You can't place a battleship part there!");
-                        }
-                        else
-                        {
-                            Grid.arr[cords[0], cords[1]] = "B ";
-                            Grid.DisplayGrid();
-                            gridIncriment += 1;
-                        }
+                        Console.Clear();
+                        Grid.arr[originCords[0], originCords[1]] = "B ";
+                        Grid.arr[originCords[0] + 1, originCords[1]] = "B ";
+                        Grid.arr[originCords[0] + 2, originCords[1]] = "B ";
+                        Grid.arr[originCords[0] + 3, originCords[1]] = "B ";
+                        Grid.DisplayGrid();
+                        Console.WriteLine("-- " + Player.PlayerName + "'s setup phase --");
+                        Console.WriteLine("Press Enter to place your ship.");
+                        Console.WriteLine("Press the arrow keys to move your ship.");
+                        Bat.ShipMove(originCords, Grid, Console.ReadKey().Key);
+                        Bat.Authorize();
                     }
+                    Console.Clear();
+                    Grid.arr[originCords[0], originCords[1]] = "B ";
+                    Grid.arr[originCords[0] + 1, originCords[1]] = "B ";
+                    Grid.arr[originCords[0] + 2, originCords[1]] = "B ";
+                    Grid.arr[originCords[0] + 3, originCords[1]] = "B ";
+                    Grid.DisplayGrid();
                 }
                 else if (i == 3)
                 {
-                    gridIncriment = 0;
-                    while (gridIncriment < 5)
+                    int[] originCords = new int[2] { 1, 4 };
+
+                    while (Air.Authorize() == false)
                     {
-                        int[] cords = Player.AskShips(i);
-                        if (GridCheck(cords, Grid, 4, gridIncriment))
-                        {
-                            Console.WriteLine("You can't place an aircraft carrier part there!");
-                        }
-                        else
-                        {
-                            Grid.arr[cords[0], cords[1]] = "A ";
-                            Grid.DisplayGrid();
-                            gridIncriment += 1;
-                        }
+                        Console.Clear();
+                        Grid.arr[originCords[0], originCords[1]] = "A ";
+                        Grid.arr[originCords[0] + 1, originCords[1]] = "A ";
+                        Grid.arr[originCords[0] + 2, originCords[1]] = "A ";
+                        Grid.arr[originCords[0] + 3, originCords[1]] = "A ";
+                        Grid.arr[originCords[0] + 4, originCords[1]] = "A ";
+                        Grid.DisplayGrid();
+                        Console.WriteLine("-- " + Player.PlayerName + "'s setup phase --");
+                        Console.WriteLine("Press Enter to place your ship.");
+                        Console.WriteLine("Press the arrow keys to move your ship.");
+                        Air.ShipMove(originCords, Grid, Console.ReadKey().Key);
+                        Air.Authorize();
                     }
+                    Console.Clear();
+                    Grid.arr[originCords[0], originCords[1]] = "A ";
+                    Grid.arr[originCords[0] + 1, originCords[1]] = "A ";
+                    Grid.arr[originCords[0] + 2, originCords[1]] = "A ";
+                    Grid.arr[originCords[0] + 3, originCords[1]] = "A ";
+                    Grid.arr[originCords[0] + 4, originCords[1]] = "A ";
+                    Grid.DisplayGrid();
                 }
             }
             Console.Clear();
-            Console.WriteLine("All ships set up by "+ Player.PlayerName);
         }
 
-        public bool GridCheck(int[] checkedCords, Grid checkedGrid, int shipType, int gridInc)
+        public bool GridCheck(int[] checkedCords, Grid checkedGrid, int shipType, bool shipPlaced)
         {
             if (shipType == 1)
             {
@@ -272,77 +299,19 @@ namespace BattleShip
                 {
                     return true;
                 }
-                else if (gridInc >= 1
-                        && checkedGrid.arr[checkedCords[0] - 1, checkedCords[1]] != "S "
-                        && checkedGrid.arr[checkedCords[0], checkedCords[1] - 1] != "S "
-                        && checkedGrid.arr[checkedCords[0] + 1, checkedCords[1]] != "S "
-                        && checkedGrid.arr[checkedCords[0], checkedCords[1] + 1] != "S ")
+                else if (checkedGrid.arr[checkedCords[0] + 1, checkedCords[1]] != ". ")
                 {
                     return true;
                 }
-                else
-                {
-                    return false;
-                }
-            }
-            else if (shipType == 2)
-            {
-                if (checkedGrid.arr[checkedCords[0], checkedCords[1]] == "S " ||
-                      checkedGrid.arr[checkedCords[0], checkedCords[1]] == "D " ||
-                      checkedGrid.arr[checkedCords[0], checkedCords[1]] == "B " ||
-                      checkedGrid.arr[checkedCords[0], checkedCords[1]] == "A ")
+                else if (checkedGrid.arr[checkedCords[0], checkedCords[1] + 1] != ". ")
                 {
                     return true;
                 }
-                else if (gridInc >= 1
-                        && checkedGrid.arr[checkedCords[0] - 1, checkedCords[1]] != "D "
-                        && checkedGrid.arr[checkedCords[0], checkedCords[1] - 1] != "D "
-                        && checkedGrid.arr[checkedCords[0] + 1, checkedCords[1]] != "D "
-                        && checkedGrid.arr[checkedCords[0], checkedCords[1] + 1] != "D ")
+                else if (checkedGrid.arr[checkedCords[0] - 1, checkedCords[1]] != ". ")
                 {
                     return true;
                 }
-                else
-                {
-                    return false;
-                }
-            }
-            else if (shipType == 3)
-            {
-                if (checkedGrid.arr[checkedCords[0], checkedCords[1]] == "S " ||
-                      checkedGrid.arr[checkedCords[0], checkedCords[1]] == "D " ||
-                      checkedGrid.arr[checkedCords[0], checkedCords[1]] == "B " ||
-                      checkedGrid.arr[checkedCords[0], checkedCords[1]] == "A ")
-                {
-                    return true;
-                }
-                else if (gridInc >= 1
-                        && checkedGrid.arr[checkedCords[0] - 1, checkedCords[1]] != "B "
-                        && checkedGrid.arr[checkedCords[0], checkedCords[1] - 1] != "B "
-                        && checkedGrid.arr[checkedCords[0] + 1, checkedCords[1]] != "B "
-                        && checkedGrid.arr[checkedCords[0], checkedCords[1] + 1] != "B ")
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else if (shipType == 4)
-            {
-                if (checkedGrid.arr[checkedCords[0], checkedCords[1]] == "S " ||
-                      checkedGrid.arr[checkedCords[0], checkedCords[1]] == "D " ||
-                      checkedGrid.arr[checkedCords[0], checkedCords[1]] == "B " ||
-                      checkedGrid.arr[checkedCords[0], checkedCords[1]] == "A ")
-                {
-                    return true;
-                }
-                else if (gridInc >= 1
-                        && checkedGrid.arr[checkedCords[0] - 1, checkedCords[1]] != "A "
-                        && checkedGrid.arr[checkedCords[0], checkedCords[1] - 1] != "A "
-                        && checkedGrid.arr[checkedCords[0] + 1, checkedCords[1]] != "A "
-                        && checkedGrid.arr[checkedCords[0], checkedCords[1] + 1] != "A ")
+                else if (checkedGrid.arr[checkedCords[0], checkedCords[1] - 1] != ". ")
                 {
                     return true;
                 }
